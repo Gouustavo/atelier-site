@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ateliê Gou Arts — Loja de Quadros</title>
+  <meta name="description" content="Quadros autorais e pinturas a óleo. Compre diretamente do ateliê." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Topo -->
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="#top">
+        <span class="brand__mark">⬤</span>
+        <span class="brand__name">Seu Ateliê</span>
+      </a>
+
+      <nav class="nav">
+        <a href="#galeria">Galeria</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+
+      <button class="cart-btn" id="openCartBtn" aria-label="Abrir carrinho">
+        Carrinho <span class="cart-badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="top">
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <h1>Pinturas que viram parte da sua casa.</h1>
+          <p>
+            Quadros autorais (óleo/acrílica). Envio para todo o Brasil.
+          </p>
+          <div class="hero__cta">
+            <a class="btn" href="#galeria">Ver quadros disponíveis</a>
+            <a class="btn btn--ghost" href="#contato">Encomendar</a>
+          </div>
+          <div class="hero__meta">
+            <span>✔ Pagamento combinado</span>
+            <span>✔ Certificado de autenticidade</span>
+            <span>✔ Embalagem segura</span>
+          </div>
+        </div>
+
+        <div class="hero__art">
+          <div class="hero__frame">
+            <div class="hero__frameInner">
+
+              <img src="img/atelie.jpeg" alt="Foto do meu ateliê" class="hero__img">
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Loja / Galeria -->
+    <section class="shop" id="galeria">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Galeria</h2>
+            <p>Selecione um quadro e veja os detalhes.</p>
+          </div>
+
+          <div class="shop-controls">
+            <label class="input">
+              <span class="input__label">Buscar</span>
+              <input id="searchInput" type="search" placeholder="Ex: paisagem, retrato, abstrato..." />
+            </label>
+
+            <label class="input">
+              <span class="input__label">Categoria</span>
+              <select id="categorySelect">
+                <option value="all">Todas</option>
+                <option value="oleo">Óleo</option>
+                <option value="acrilica">Acrílica</option>
+                <option value="desenho">Desenho</option>
+              </select>
+            </label>
+
+            <label class="input">
+              <span class="input__label">Ordenar</span>
+              <select id="sortSelect">
+                <option value="featured">Destaques</option>
+                <option value="price-asc">Menor preço</option>
+                <option value="price-desc">Maior preço</option>
+                <option value="newest">Mais recentes</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid" id="productsGrid">
+          <!-- Cards entram pelo JS -->
+        </div>
+
+        <div class="empty" id="emptyState" hidden>
+          <p>Nenhum quadro encontrado com esses filtros.</p>
+          <button class="btn btn--ghost" id="resetFiltersBtn">Limpar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sobre -->
+    <section class="about" id="sobre">
+      <div class="container about__inner">
+        <div class="about__card">
+          <h2>Sobre o ateliê</h2>
+          <p>
+            Sou Gustavo, artista desde os 12 anos de idade, e sou apaixonado por arte desde que tive meu primeiro contato com ela. Comecei com a tinta acrílica, depois me aventurei na óleo, e hoje trabalho vendendo a minha arte, seja com quadros prontos ou encomendas, principalmente. Esse site, criado por mim, foi feito no intuito de organizar melhor as minhas peças, facilitar a apresentação delas e fechar vendas pelo meu canal de contato preferido (WhatsApp, Instagram, etc). Se quiser saber mais ou encomendar algo, é só me chamar!
+          </p>
+          <ul class="bullets">
+            <li>🎨 Técnicas: óleo / acrílica / mista</li>
+            <li>🖼️ Aceito pedidos com tamanhos personalizados</li>
+            <li>📦 Envio bem embalado</li>
+          </ul>
+        </div>
+
+        <div class="about__card about__card--alt">
+          <h3>Como funciona a compra</h3>
+          <ol class="steps">
+            <li>Escolha o quadro e clique em “Ver detalhes”.</li>
+            <li>No modal, passe pro lado e veja mais fotos do mesmo quadro.</li>
+            <li>Finalize pelo WhatsApp/Instagram/E-mail (você decide).</li>
+          </ol>
+          <p class="muted">
+            *Esse template não processa pagamento sozinho — ele te ajuda a apresentar e organizar as peças
+            e fechar a venda pelo seu canal de preferência.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contato -->
+    <section class="contact" id="contato">
+      <div class="container contact__inner">
+        <div class="contact__card">
+          <h2>Contato</h2>
+
+          <div class="contact__links">
+            <a class="link-pill" href="#" id="whatsLink">WhatsApp</a>
+            <a class="link-pill" href="#" id="instaLink">Instagram</a>
+            <a class="link-pill" href="mailto:seuemail@exemplo.com">E-mail</a>
+          </div>
+
+          <form class="form" id="leadForm">
+            <div class="form__row">
+              <label class="input">
+                <span class="input__label">Seu nome</span>
+                <input name="name" required placeholder="Ex: Maria" />
+              </label>
+
+              <label class="input">
+                <span class="input__label">Contato</span>
+                <input name="contact" required placeholder="Ex: WhatsApp / e-mail" />
+              </label>
+            </div>
+
+            <label class="input">
+              <span class="input__label">Mensagem</span>
+              <textarea name="message" rows="4" required
+                placeholder="Ex: Queria saber medidas e frete do quadro X..."></textarea>
+            </label>
+
+            <button class="btn" type="submit">Enviar interesse</button>
+            <p class="muted" id="formMsg" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+      <div class="container footer__inner">
+        <p>© <span id="year"></span> Ateliê Gou Arts. Todos os direitos reservados.</p>
+        <button class="link" id="backToTop">Voltar ao topo ↑</button>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Modal de Produto -->
+  <dialog class="modal" id="productModal">
+    <form method="dialog" class="modal__inner">
+      <button class="modal__close" aria-label="Fechar">✕</button>
+
+      <div class="modal__content">
+        <!-- Slider de imagens (mais fotos do mesmo quadro) -->
+        <div class="modal__image">
+          <div class="slider" id="slider">
+            <button class="slider__btn slider__btn--prev" id="prevImg" type="button" aria-label="Imagem anterior">‹</button>
+
+            <div class="slider__viewport" id="sliderViewport">
+              <div class="slider__track" id="sliderTrack">
+                <!-- imagens entram pelo JS -->
+              </div>
+            </div>
+
+            <button class="slider__btn slider__btn--next" id="nextImg" type="button" aria-label="Próxima imagem">›</button>
+          </div>
+
+          <div class="slider__dots" id="sliderDots" aria-label="Indicadores de imagem">
+            <!-- bolinhas via JS -->
+          </div>
+        </div>
+
+        <div class="modal__info">
+          <h3 id="modalTitle">Título</h3>
+          <p class="muted" id="modalMeta">Técnica • Tamanho • Ano</p>
+
+          <p id="modalDesc">Descrição do quadro. Troque depois.</p>
+
+          <div class="modal__priceRow">
+            <div>
+              <div class="price" id="modalPrice">R$ 0</div>
+              <div class="muted" id="modalAvailability">Disponível</div>
+            </div>
+
+            <button class="btn" type="button" id="addToCartBtn">Adicionar ao carrinho</button>
+          </div>
+
+          <div class="modal__actions">
+            <a class="btn btn--ghost" href="#contato" id="buyNowBtn">Comprar agora</a>
+            <button class="btn btn--ghost" type="button" id="copyInfoBtn">Copiar infos</button>
+          </div>
+
+          <p class="muted tiny" id="copyMsg" aria-live="polite"></p>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Drawer do Carrinho -->
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer__panel">
+      <div class="drawer__head">
+        <h3>Seu carrinho</h3>
+        <button class="drawer__close" id="closeCartBtn" aria-label="Fechar carrinho">✕</button>
+      </div>
+
+      <div class="drawer__body" id="cartItems"></div>
+
+      <div class="drawer__foot">
+        <div class="totals">
+          <span>Total</span>
+          <strong id="cartTotal">R$ 0</strong>
+        </div>
+        <button class="btn" id="checkoutBtn">Finalizar pelo contato</button>
+        <button class="btn btn--ghost" id="clearCartBtn">Limpar carrinho</button>
+        <p class="muted tiny">
+          O “finalizar” te leva pra seção de contato e já deixa uma mensagem pronta.
+        </p>
+      </div>
+    </div>
+    <div class="drawer__backdrop" id="drawerBackdrop"></div>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>
