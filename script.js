@@ -3,7 +3,7 @@
 // ===============================
 const PRODUCTS = [
   {
-    id: "q001",
+    id: "Caveira com Cigarro Aceso",
     title: "Caveira com Cigarro Aceso",
     price: 430,
     category: "acrilica", // oleo | acrilica | desenho | etc
@@ -12,15 +12,12 @@ const PRODUCTS = [
     year: 2020,
     featured: true,
     available: true,
-
-    // ✅ Adicione várias fotos do mesmo quadro aqui:
-    // Exemplo: images: ["img/q001-1.jpg", "img/q001-2.jpg", "img/q001-3.jpg"]
     images: ["img/cavera1.jpeg", "img/cavera2.jpeg", "img/cavera3.jpeg"],
 
     description: "Descrição do quadro. Troque pelo seu texto."
   },
   {
-    id: "q002",
+    id: "a Jovem e a Pera",
     title: "a Jovem e a Pera",
     price: 450,
     category: "oleo",
@@ -33,7 +30,7 @@ const PRODUCTS = [
     description: "Descrição do quadro. Troque pelo seu texto."
   },
   {
-    id: "q003",
+    id: "Amendoreira em Flor num copo",
     title: "Amendoeira em Flor num copo",
     price: 250,
     category: "oleo",
@@ -138,6 +135,7 @@ function addToCart(productId) {
   saveCart(cart);
   renderCart();
   bumpCartBadge();
+  showToast("Adicionado ao carrinho!");
 }
 
 function removeFromCart(productId) {
@@ -460,28 +458,14 @@ checkoutBtn.addEventListener("click", () => {
   const cart = loadCart();
   if (cart.length === 0) {
     closeDrawer();
-    location.hash = "#contato";
+    showToast("Seu carrinho está vazio.");
+    location.hash = "#galeria";
     return;
   }
 
-  const lines = cart.map((item) => {
-    const p = PRODUCTS.find((x) => x.id === item.id);
-    if (!p) return null;
-    return `• ${p.title} (${p.size}) — ${item.qty}x — ${fmtBRL(p.price)}`;
-  }).filter(Boolean);
-
-  const msg =
-`Olá! Tenho interesse nesses quadros:
-${lines.join("\n")}
-
-Total estimado: ${fmtBRL(cartTotal())}
-Pode me passar frete e formas de pagamento?`;
-
-  const textarea = leadForm.querySelector("textarea[name='message']");
-  textarea.value = msg;
-
+  // vai para a tela de pagamento/resumo
   closeDrawer();
-  location.hash = "#contato";
+  window.location.href = "pagamento.html";
 });
 
 // ===============================
@@ -492,7 +476,8 @@ function setContactLinks() {
   const insta = document.querySelector("#instaLink");
 
   const preMsg = encodeURIComponent("Olá! Tenho interesse em um quadro do seu ateliê.");
-  whats.href = `https://wa.me/${CONTACT.whatsappNumber}?text=${preMsg}`;
+  const phone = digitsOnly(CONTACT.whatsappNumber);
+  if (whats) whats.href = `https://wa.me/${phone}?text=${preMsg}`;
   insta.href = CONTACT.instagramUrl;
 }
 
@@ -511,7 +496,8 @@ Contato: ${contact}
 Mensagem:
 ${message}`;
 
-  const url = `https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(text)}`;
+  const phone = digitsOnly(CONTACT.whatsappNumber);
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
   window.open(url, "_blank", "noopener,noreferrer");
 
   formMsg.textContent = "Abrindo WhatsApp com sua mensagem…";
@@ -525,7 +511,8 @@ function injectCartStyles() {
   const style = document.createElement("style");
   style.textContent = `
     .drawer{ position:fixed; inset:0; pointer-events:none; z-index:50; }
-    .drawer__backdrop{ position:absolute; inset:0; background: rgba(0,0,0,.55); opacity:0; transition: opacity .2s ease; }
+    /* IMPORTANTE: o backdrop NÃO pode ficar por cima do painel (senão os botões não clicam) */
+    .drawer__backdrop{ position:absolute; inset:0; background: rgba(0,0,0,.55); opacity:0; transition: opacity .2s ease; z-index: 1; }
     .drawer__panel{
       position:absolute; right:0; top:0; height:100%;
       width:min(420px, 92vw);
@@ -535,6 +522,7 @@ function injectCartStyles() {
       transition: transform .25s ease;
       display:flex; flex-direction:column;
       box-shadow: var(--shadow);
+      z-index: 2;
     }
     .drawer--open{ pointer-events:auto; }
     .drawer--open .drawer__panel{ transform: translateX(0); }
@@ -552,6 +540,44 @@ function injectCartStyles() {
     .qty{ width:60px; text-align:center; }
   `;
   document.head.appendChild(style);
+}
+
+// só números (wa.me exige isso)
+function digitsOnly(value) {
+  return safeText(value).replace(/\D+/g, "");
+}
+
+// Toast simples ("adicionado ao carrinho")
+let toastEl = null;
+function showToast(message) {
+  if (!toastEl) {
+    toastEl = document.createElement("div");
+    toastEl.setAttribute("role", "status");
+    toastEl.setAttribute("aria-live", "polite");
+    toastEl.style.cssText = [
+      "position:fixed",
+      "left:50%",
+      "bottom:18px",
+      "transform:translateX(-50%)",
+      "background:rgba(18,20,26,.95)",
+      "border:1px solid rgba(255,255,255,.10)",
+      "color:#eaeaf0",
+      "padding:10px 14px",
+      "border-radius:14px",
+      "box-shadow: 0 18px 60px rgba(0,0,0,.55)",
+      "z-index:9999",
+      "opacity:0",
+      "transition:opacity .2s ease"
+    ].join(";");
+    document.body.appendChild(toastEl);
+  }
+
+  toastEl.textContent = message;
+  toastEl.style.opacity = "1";
+  window.clearTimeout(showToast._t);
+  showToast._t = window.setTimeout(() => {
+    if (toastEl) toastEl.style.opacity = "0";
+  }, 1600);
 }
 
 function wireFilters() {
@@ -582,3 +608,27 @@ function init() {
 }
 
 init();
+
+// ---- Patch: salvar titulo e preco no carrinho para pagina de pagamento ----
+(function(){
+  const KEY='atelier_cart_v1';
+  const oldAdd=window.addToCart;
+  window.addToCart=function(productId){
+    try{
+      const p=(window.PRODUCTS||[]).find(x=>x.id===productId)||{};
+      const cart=JSON.parse(localStorage.getItem(KEY)||'[]');
+      const idx=cart.findIndex(i=>i.id===productId);
+      if(idx>=0){
+        cart[idx].qty+=1;
+        cart[idx].title=p.title||cart[idx].title||productId;
+        cart[idx].price=p.price||cart[idx].price||0;
+      }else{
+        cart.push({id:productId,qty:1,title:p.title||productId,price:p.price||0});
+      }
+      localStorage.setItem(KEY,JSON.stringify(cart));
+      if(typeof window.renderCart==='function') window.renderCart();
+      if(typeof window.bumpCartBadge==='function') window.bumpCartBadge();
+      if(typeof window.showToast==='function') window.showToast('Adicionado ao carrinho!');
+    }catch(e){ if(oldAdd) oldAdd(productId); }
+  };
+})();

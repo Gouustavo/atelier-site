@@ -418,3 +418,11 @@ select option {
   background: #12141a;
   color: white;
 }
+
+/* --- Cart layering fix --- */
+.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;}
+.cart-drawer{position:fixed;right:0;top:0;height:100%;width:min(420px,92vw);background:#0b0b0b;z-index:50;pointer-events:auto;}
+.cart-drawer button,.cart-drawer input{pointer-events:auto;}
+/* --- Toast --- */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:#1a1d26;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5);z-index:100;transition:.25s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}

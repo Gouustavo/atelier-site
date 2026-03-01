@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Finalizar Pedido</title>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="container" style="padding:40px 0">
+  <h1>Resumo do Pedido</h1>
+  <ul id="resumo"></ul>
+  <h2 id="total"></h2>
+  <a id="finalizarWA" class="btn" href="#">Finalizar no WhatsApp</a>
+</div>
+<script>
+(function(){
+  const KEY='atelier_cart_v1';
+  const WA='5512996503453';
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch{return []}}
+  function fmt(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+  const cart=load();
+  const ul=document.getElementById('resumo');
+  let total=0;
+  if(!cart.length){
+    ul.innerHTML='<li>Seu carrinho está vazio.</li>';
+    document.getElementById('total').textContent='Total: R$ 0,00';
+    return;
+  }
+  const lines=['Olá! Gostaria de finalizar o pedido:'];
+  cart.forEach(i=>{
+    const sub=(i.price||0)*(i.qty||0);
+    total+=sub;
+    const li=document.createElement('li');
+    li.textContent=`${i.title} — ${i.qty}x (${fmt(sub)})`;
+    ul.appendChild(li);
+    lines.push(`• ${i.title} — ${i.qty}x (${fmt(sub)})`);
+  });
+  document.getElementById('total').textContent='Total: '+fmt(total);
+  lines.push('Total: '+fmt(total));
+  const url='https://wa.me/'+WA+'?text='+encodeURIComponent(lines.join('\n'));
+  document.getElementById('finalizarWA').href=url;
+})();
+</script>
+</body></html>
